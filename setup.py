@@ -1,21 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-# Copyright (C) 2008-2013 Richard Liao <richard.liao.i@gmail.com>
-# All rights reserved.
-#
-# This software is licensed as described in the file COPYING, which
-# you should have received as part of this distribution.
-#
 
 import sys
+
 from setuptools import setup
 
 extra = {}
 
 try:
     import babel
-    from trac.util.dist import get_l10n_js_cmdclass
+    from trac.dist import get_l10n_js_cmdclass
 except ImportError:
     babel = None
 else:
@@ -27,33 +21,34 @@ else:
          {'template_class': 'genshi.template:NewTextTemplate'}),
     ]
     extra['message_extractors'] = {
-        'tickettemplate': extractors,
+        'ticket_template': extractors,
     }
 
 setup(
     name='TracTicketTemplate',
+    description="Ticket Template Plugin for Trac.",
     version='1.0',
-    packages=['tickettemplate'],
-    package_data={'tickettemplate': ['*.txt', 'templates/*.*', 'htdocs/*.*',
-                                     'tests/*.*', 'locale/*.*',
-                                     'locale/*/LC_MESSAGES/*.*']},
-    author="Richard Liao",
-    author_email='richard.liao.i@gmail.com',
-    maintainer="Richard Liao",
-    maintainer_email="richard.liao.i@gmail.com",
-    description="Ticket template plugin for Trac.",
-    license="3-Clause BSD",
+    packages=['ticket_template'],
+    package_data={'ticket_template': [
+        '*.txt',
+        'templates/*.*',
+        'htdocs/*.*',
+        'tests/*.*',
+        'locale/*.*',
+        'locale/*/LC_MESSAGES/*.*',
+    ]},
+    author="Yoshinobu Fujimoto",
+    author_email='yosinobu@iij.ad.jp',
+    license="MIT",
     keywords="trac ticket template",
-    url="https://trac-hacks.org/wiki/TracTicketTemplatePlugin",
+    url="https://gh.iiji.jp/idp/trac-ticket-template-plugin",
     classifiers=[
         'Framework :: Trac',
     ],
-
-    install_requires=['Trac',
-                      'simple_json' if sys.version_info < (2, 6) else ''],
-    test_suite='tickettemplate.tests',
+    install_requires=['Trac', 'simple_json' if sys.version_info < (2, 6) else ''],
+    test_suite='ticket_template.tests',
     entry_points={
-        'trac.plugins': ['tickettemplate = tickettemplate.ttadmin'],
+        'trac.plugins': ['ticket_template = ticket_template.admin'],
     },
     **extra
 )

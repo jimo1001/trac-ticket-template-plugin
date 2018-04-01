@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2008-2013 Richard Liao <richard.liao.i@gmail.com>
-# All rights reserved.
-#
-# This software is licensed as described in the file COPYING, which
-# you should have received as part of this distribution.
-#
 
 from __future__ import with_statement
 
 import inspect
 import textwrap
-import time
 import urllib
 from pkg_resources import resource_exists, resource_filename
 
@@ -24,8 +17,7 @@ from trac.perm import IPermissionRequestor
 from trac.ticket import Ticket, Type as TicketType
 from trac.util.translation import domain_functions
 from trac.web.api import IRequestHandler, ITemplateStreamFilter, RequestDone
-from trac.web.chrome import Chrome, ITemplateProvider, add_script, \
-                            add_script_data
+from trac.web.chrome import ITemplateProvider, add_script, add_script_data
 
 try:
     import json
@@ -36,9 +28,7 @@ from default_templates import DEFAULT_TEMPLATES
 from tickettemplate.model import TT_Template, schema, schema_version
 from utils import *
 
-gettext, _, tag_, N_, add_domain = \
-    domain_functions('tickettemplate', 'gettext', '_', 'tag_', 'N_',
-                     'add_domain')
+gettext, _, tag_, N_, add_domain = domain_functions('tickettemplate', 'gettext', '_', 'tag_', 'N_', 'add_domain')
 
 
 class TicketTemplateModule(Component):
@@ -49,16 +39,14 @@ class TicketTemplateModule(Component):
 
     SECTION_NAME = 'tickettemplate'
 
-    enable_custom = BoolOption(SECTION_NAME, 'enable_custom', True,
-        """Display the My Template sidebar.""")
+    enable_custom = BoolOption(SECTION_NAME, 'enable_custom', True, 'Display the My Template sidebar.')
 
     field_list = ListOption(SECTION_NAME, 'field_list',
-        'summary, description, reporter, owner, priority, cc, milestone, '
-        'component, version, type',
-        doc="""List of fields that can be included in the template.""")
+                            'summary, description, reporter, owner, priority, cc, milestone, '
+                            'component, version, type',
+                            doc='List of fields that can be included in the template.')
 
-    json_template_file = Option(SECTION_NAME, 'json_template_file', '',
-        """File containing templates.""")
+    json_template_file = Option(SECTION_NAME, 'json_template_file', '', 'File containing templates.')
 
     def __init__(self):
         locale_dir = resource_filename(__name__, 'locale')

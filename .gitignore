@@ -6,21 +6,6 @@ build
 dist
 *.egg-info
 *.pyc
-testenv
-testing.log
-functional-testing.log
-html
-htmlcov
-figleaf
-.coverage
-.figleaf*
-*.figleaf
-Makefile.cfg
-doc/.build
-*.mo
-trac/htdocs/js/messages/*.js
-.settings
-.project
-.pydevproject
-/.pydevproject
+.python-version
+.idea/
 
