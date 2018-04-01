@@ -6,6 +6,6 @@ build
 dist
 *.egg-info
 *.pyc
+*.mo
 .python-version
 .idea/
-

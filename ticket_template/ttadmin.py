@@ -248,7 +248,7 @@ class TicketTemplateModule(Component):
                 data['tt_text'] = tt_text
                 data['description_preview'] = description_preview
 
-        return 'admin_tickettemplate.html', data
+        return 'admin_ticket_template.html', data
 
     # ITemplateProvider methods
 

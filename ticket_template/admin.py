@@ -28,13 +28,16 @@ class TicketTemplateAdmin(Component):
         yield 'TRAC_ADMIN'
 
     def render_admin_panel(self, req, cat, page, path_info):
-        data = {}
-        index = 0
+        data = {
+            'field_name': '',
+            'field_value': '',
+            'template': '',
+        }
+        self.log.debug('request to ticket_template admin. cat: %s, page: %s, path_info: %s', cat, page, path_info)
         data['enable'] = self.config.getbool('theme', 'enable_css', False)
         if page == 'advanced':
             data.update({
-                'css': req.args.get('css', ''),
-                'js': req.args.get('js', ''),
+                'template': req.args.get('js', ''),
                 'id': req.args.get('custom_theme_id', ''),
                 'regex': req.args.get('custom_theme_regex', ''),
                 'enable': req.args.get('custom_theme_enabled', ''),
@@ -144,7 +147,4 @@ class TicketTemplateAdmin(Component):
         add_stylesheet(req, 'themeengine/admin.css')
         add_script(req, 'themeengine/farbtastic/farbtastic.js')
         add_script(req, 'themeengine/jquery.rule.js')
-        if page == 'advanced':
-            return 'admin_theme_advanced.html', data
-        else:
-            return 'admin_theme_custom.html', data
+        return 'admin_ticket_template.html', data
