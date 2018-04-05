@@ -11,24 +11,22 @@
 <head><title>Available Projects</title></head>
 <body>
 <h2>Ticket: Template</h2>
-<form id="savetickettemplate" action="${href.admin('ticket/tickettemplate')}" method="post">
+<form id="save_ticket_template" action="${href.admin('ticket/ticket_template')}" method="post">
     <div class="field">
         <label for="type">Type:</label>
-        <p>
-            <select size="1" id="type" name="type">
-                <option py:for="option in options" selected="${option==type or None}">${option}</option>
-                <option py:if="type and type not in options" selected="selected">${type}</option>
-            </select>
-            <input type="submit" name="loadtickettemplate" value="${_('Load')}"/>
-            <input type="submit" name="savetickettemplate" value="${_('Apply change')}"/>
-            <input type="reset" value="${_('Reset')}"/>
-        </p>
+        <select size="1" id="type" name="type">
+            <option py:for="option in options" selected="${option==type or None}">${option}</option>
+            <option py:if="type and type not in options" selected="selected">${type}</option>
+        </select>
     </div>
     <div class="field">
         <label for="description">Description:</label>
-        <p>
-            <textarea id="description" name="description" class="wikitext" rows="10" cols="68" py:content="tt_text"></textarea>
-        </p>
+        <textarea id="description" name="description" class="wikitext" rows="10" cols="100" py:content="template"></textarea>
+    </div>
+    <div class="buttons">
+        <input type="submit" name="save" value="${_('Apply change')}"/>
+        <input type="reset" value="${_('Reset')}"/>
+        <input type="submit" name="delete" value="${_('Delete')}"/>
     </div>
 </form>
 </body>
