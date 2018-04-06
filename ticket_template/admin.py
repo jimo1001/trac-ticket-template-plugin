@@ -5,7 +5,7 @@ import re
 from pkg_resources import resource_filename
 from trac.admin import IAdminPanelProvider
 from trac.core import Component, implements
-from trac.perm import IPermissionRequestor
+from trac.ticket import TicketSystem
 from trac.util.translation import domain_functions
 from trac.web.chrome import add_notice, add_warning, add_stylesheet, add_script_data, ITemplateProvider
 
@@ -29,6 +29,7 @@ class TicketTemplateAdmin(Component):
             'field_name': req.args.get('field_name', ''),
             'field_value': req.args.get('field_value', ''),
             'template': req.args.get('template', ''),
+            'fields': self.get_ticket_fields(),
         }
         self.log.debug('request to ticket_template admin. '
                        'category: %s, page: %s, path_info: %s', category, page, path_info)
@@ -77,3 +78,7 @@ class TicketTemplateAdmin(Component):
 
     def get_htdocs_dirs(self):
         return [('ticket_template', resource_filename(__name__, 'htdocs'))]
+
+    # other methods
+    def get_ticket_fields(self):
+        return TicketSystem(self.env).get_ticket_fields()

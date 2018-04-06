@@ -15,8 +15,7 @@
     <div class="field">
         <label for="type">Type:</label>
         <select size="1" id="type" name="type">
-            <option py:for="option in options" selected="${option==type or None}">${option}</option>
-            <option py:if="type and type not in options" selected="selected">${type}</option>
+            <option py:for="field in fields">${field.name}</option>
         </select>
     </div>
     <div class="field">

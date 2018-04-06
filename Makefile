@@ -5,94 +5,13 @@ define HELP
 
  Please use `make <target>' where <target> is one of:
 
+  package             create the plugin's package
   clean               delete all compiled files
   status              show which Python is used and other infos
 
   [python=...]        variable for selecting Python version
   [pythonopts=...]    variable containing extra options for the interpreter
 
- As there are many more tasks available, you can ask for specific help:
-
-  help-code           tasks for checking the code style
-  help-testing        tasks and configuration parameters for testing
-  help-server         tasks and configuration for starting tracd
-  help-l10n           tasks and configuration for L10N maintenance
-  help-release        tasks and configuration for preparing a Trac release
-  help-misc           several other tasks
-  help-all            all the tasks at a glance...
-endef
-# `
-export HELP
-
-# ----------------------------------------------------------------------------
-#
-# Main targets
-#
-# ----------------------------------------------------------------------------
-
-.PHONY: all help help-all status clean clean-bytecode clean-mo
-
-%.py : status
-	$(PYTHON) setup.py -q test -s $(subst /,.,$(@:.py=)).test_suite $(testopts)
-
-ifdef test
-all: status
-	$(PYTHON) setup.py -q test -s $(subst /,.,$(test:.py=)).test_suite $(testopts)
-else
-all: help
-endif
-
-help: Makefile.cfg
-	@echo "$$HELP"
-
-help_variables = $(filter HELP_%,$(.VARIABLES))
-help_targets = $(filter-out help-CFG,$(help_variables:HELP_%=help-%))
-
-.SECONDEXPANSION:
-help-all: $$(sort $$(help_targets))
-
-
-help-%: Makefile.cfg
-	@echo "$${HELP_$*}"
-
-Makefile.cfg:
-	@echo "$$HELP_CFG"
-
-status:
-	@echo
-	@echo "Python: $$(which $(PYTHON)) $(pythonopts)"
-	@echo
-	@echo "Variables:"
-	@echo "  PATH=$$PATH"
-	@echo "  PYTHONPATH=$$PYTHONPATH"
-	@echo "  TRAC_TEST_DB_URI=$$TRAC_TEST_DB_URI"
-	@echo "  server-options=$(server-options)"
-	@echo
-	@echo "External dependencies:"
-	@printf "  Git version: "
-	@git --version 2>/dev/null || echo "not installed"
-	@printf "  Subversion version: "
-	@svn --version -q 2>/dev/null || echo "not installed"
-	@echo
-
-Trac.egg-info: status
-	$(PYTHON) setup.py egg_info
-
-clean: clean-bytecode clean-mo
-
-clean-bytecode:
-	find . -name \*.py[co] -print -delete
-
-Makefile: ;
-
-
-# ----------------------------------------------------------------------------
-#
-# L10N related tasks
-#
-# ----------------------------------------------------------------------------
-
-define HELP_l10n
 
  ---------------- L10N tasks
 
@@ -125,8 +44,99 @@ define HELP_l10n
 
   [updateopts=...]    variable containing extra options for update (e.g. -N)
 
+
+ ---------------- Code checking tasks
+
+  pylint              check code with pylint
+  jinja               check Jinja2 templates
+  coffee              compile .coffee script files into .js files
+
+  [module=...]        module or package to check with pylint
+  [templates=...]     list of Jinja2 templates to check
+  [coffeescripts=...] list of coffee script files to compile
+
+
+ ---------------- Testing tasks
+
+  unit-test           run unit tests
+  functional-test     run functional tests
+  test-wiki           shortcut for running all wiki unit tests
+  test                run all tests
+  coverage            run all tests, under coverage
+
+  [db=...]            variable for selecting database backend
+  [test=...]          variable for selecting a single test file
+  [testopts=...]      variable containing extra options for running tests
+  [coverageopts=...]  variable containing extra options for coverage
+
 endef
-export HELP_l10n
+# `
+export HELP
+
+# ----------------------------------------------------------------------------
+#
+# Main targets
+#
+# ----------------------------------------------------------------------------
+
+.PHONY: all package help status clean clean-bytecode clean-mo
+
+%.py : status
+	$(PYTHON) setup.py -q test -s $(subst /,.,$(@:.py=)).test_suite $(testopts)
+
+ifdef test
+all: status
+	$(PYTHON) setup.py -q test -s $(subst /,.,$(test:.py=)).test_suite $(testopts)
+else
+all: help
+endif
+
+package:
+	$(PYTHON) setup.py bdist_egg
+
+help:
+	@echo "$$HELP"
+
+help_variables = $(filter HELP_%,$(.VARIABLES))
+help_targets = $(filter-out help-CFG,$(help_variables:HELP_%=help-%))
+
+status:
+	@echo
+	@echo "Python: $$(which $(PYTHON)) $(pythonopts)"
+	@echo
+	@echo "Variables:"
+	@echo "  PATH=$$PATH"
+	@echo "  PYTHONPATH=$$PYTHONPATH"
+	@echo "  TRAC_TEST_DB_URI=$$TRAC_TEST_DB_URI"
+	@echo "  server-options=$(server-options)"
+	@echo
+	@echo "External dependencies:"
+	@printf "  Git version: "
+	@git --version 2>/dev/null || echo "not installed"
+	@printf "  Subversion version: "
+	@svn --version -q 2>/dev/null || echo "not installed"
+	@echo
+
+Trac.egg-info: status
+	$(PYTHON) setup.py egg_info
+
+clean: clean-bytecode clean-mo clean-build-files
+
+clean-bytecode:
+	find . -name \*.py[co] -print -delete
+
+clean-build-files:
+	@echo "Deleting temporary files that created in building package[s] ..."
+	@rm -frv ./*.egg-info ./build ./dist
+
+Makefile: ;
+
+
+# ----------------------------------------------------------------------------
+#
+# L10N related tasks
+#
+# ----------------------------------------------------------------------------
 
 catalogs = messages messages-js
 
@@ -280,21 +290,6 @@ clean-mo:
 #
 # ----------------------------------------------------------------------------
 
-define HELP_code
-
- ---------------- Code checking tasks
-
-  pylint              check code with pylint
-  jinja               check Jinja2 templates
-  coffee              compile .coffee script files into .js files
-
-  [module=...]        module or package to check with pylint
-  [templates=...]     list of Jinja2 templates to check
-  [coffeescripts=...] list of coffee script files to compile
-
-endef
-export HELP_code
-
 .PHONY: pylint jinja coffee
 
 pylintopts = --persistent=n --init-import=y \
@@ -331,24 +326,6 @@ coffeescripts ?= $(shell find trac tracopt -name \*.coffee)
 #
 # ----------------------------------------------------------------------------
 
-define HELP_testing
-
- ---------------- Testing tasks
-
-  unit-test           run unit tests
-  functional-test     run functional tests
-  test-wiki           shortcut for running all wiki unit tests
-  test                run all tests
-  coverage            run all tests, under coverage
-
-  [db=...]            variable for selecting database backend
-  [test=...]          variable for selecting a single test file
-  [testopts=...]      variable containing extra options for running tests
-  [coverageopts=...]  variable containing extra options for coverage
-
-endef
-export HELP_testing
-
 .PHONY: test unit-test functional-test test-wiki
 
 test: unit-test functional-test
@@ -361,6 +338,8 @@ functional-test: Trac.egg-info
 
 test-wiki:
 	$(PYTHON) ticket_template/tests/allwiki.py $(testopts)
+
+
 
 # ----------------------------------------------------------------------------
 #
@@ -402,189 +381,7 @@ htmlcov/index.html:
 	coverage html --omit=*/__init__.py
 
 
-# ----------------------------------------------------------------------------
-#
-# Tracd related tasks
-#
-# ----------------------------------------------------------------------------
 
-define HELP_server
-
- ---------------- Standalone test server
-
-  [start-]server      start tracd
-
-  [port=...]          variable for selecting the port
-  [auth=...]          variable for specifying authentication
-  [env=...]           variable for the trac environment or parent dir
-  [tracdopts=...]     variable containing extra options for tracd
-
-endef
-export HELP_server
-
-port ?= 8000
-tracdopts ?= -r
-
-define server-options
- $(if $(port),-p $(port))\
- $(if $(auth),-a '$(auth)')\
- $(tracdopts)\
- $(if $(wildcard $(env)/VERSION),$(env),-e $(env))
-endef
-
-.PHONY: server start-server tracd start-tracd
-
-server tracd start-tracd: start-server
-
-start-server: Trac.egg-info
-ifdef env
-	$(PYTHON) ticket_template/web/standalone.py $(server-options)
-else
-	@echo "\`env' variable was not specified. See \`make help'."
-endif
-
-
-
-# ----------------------------------------------------------------------------
-#
-# Miscellaneous tasks
-#
-# ----------------------------------------------------------------------------
-
-define HELP_misc
- ---------------- Miscellaneous
-
-  start-admin         start trac-admin (on `env')
-  start-python        start the Python interpreter
-
-  [adminopts=...]     variable containing extra options for trac-admin
-
-endef
-# ` (keep emacs font-lock happy)
-export HELP_misc
-
-
-.PHONY: trac-admin start-admin
-
-trac-admin: start-admin
-
-start-admin:
-ifneq "$(wildcard $(env)/VERSION)" ""
-	@$(PYTHON) ticket_template/admin/console.py $(env) $(adminopts)
-else
-	@echo "\`env' variable was not specified or doesn't point to one env."
-endif
-
-
-.PHONY: start-python
-
-start-python:
-	@$(PYTHON)
-# (this doesn't seem to be much, but we're taking benefit of the
-# environment setup we're doing below)
-
-
-# ----------------------------------------------------------------------------
-#
-# Release related tasks
-#
-# ----------------------------------------------------------------------------
-
-define HELP_release
-
- ---------------- Release tasks
-
-  release             release-exe on Windows, release-src otherwise
-  release-src         generate the .tar.gz and .whl packages
-  release-exe         generate the Windows installers (32- and 64-bits)
-  release-clean       remove the packages
-
-  checksum            MD5 and SHA1 checksums of packages of given version
-  upload              scp the packages of given version to user@lynx:~/dist
-
-  [version=...]       version number, mandatory for checksum and upload
-endef
-export HELP_release
-
-.PHONY: release release-src wheel dist release-exe wininst
-.PHONY: clean-release checksum upload
-
-ifeq "$(OS)" "Windows_NT"
-release: release-exe
-else # !Windows_NT
-release: release-src
-endif # Windows_NT
-
-clean-release:
-ifeq "$(version)" ""
-	$(error "specify version= on the make command-line")
-else
-	@rm $(sdist+wheel) $(wininst)
-endif
-
-user ?= $(or $(USER),$(LOGNAME),$(USERNAME))
-lynx = $(user)@lynx.edgewall.com:/home/$(user)/dist
-SCP ?= scp
-
-release-src: wheel sdist
-
-wheel:
-	@$(PYTHON) setup.py bdist_wheel
-sdist:
-	@$(PYTHON) setup.py sdist
-
-sdist+wheel = $(sdist_gztar) $(bdist_wheel)
-
-sdist_gztar = dist/Trac-$(version).tar.gz
-bdist_wheel = dist/Trac-$(version)-py2-none-any.whl
-
-
-ifeq "$(OS)" "Windows_NT"
-release-exe:
-ifdef python.x86
-	make python=x86 wininst
-else
-	$(error "define python.x86 in Makefile.cfg for building $(wininst.x86)")
-endif
-ifdef python.x64
-	make python=x64 wininst
-else
-	$(error "define python.x64 in Makefile.cfg for building $(wininst.x64)")
-endif
-
-wininst = $(wininst.x86) $(wininst.x64)
-
-wininst.x86 = dist/Trac-$(version).win32.exe
-wininst.x64 = dist/Trac-$(version).win-amd64.exe
-
-wininst:
-	@$(PYTHON) setup.py bdist_wininst
-endif # Windows_NT
-
-packages = $(wildcard $(sdist+wheel) $(wininst))
-
-checksum:
-ifeq "$(version)" ""
-	$(error "specify version= on the make command-line")
-else
-	@echo "Packages for Trac-$(version):"
-	@echo
-	@$(if $(packages), \
-	    python contrib/checksum.py md5:sha1 $(packages); \
-	, \
-	    echo "No packages found: $(sdist+wheel) $(wininst)" \
-	)
-endif
-
-upload: checksum
-ifeq "$(user)" ""
-	$(error "define user in Makefile.cfg for uploading to lynx")
-else
-	$(if $(packages),$(SCP) $(packages) $(lynx))
-endif # user
-
-
-
 # ============================================================================
 #
 # Setup environment variables
@@ -628,4 +425,3 @@ export TRAC_TEST_DB_URI = $($(db).uri)
 # Misc.
 space = $(empty) $(empty)
 comma = ,
-# ----------------------------------------------------------------------------
