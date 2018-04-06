@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#
 
 DEFAULT_TEMPLATES = [
     ("defect", """= bug description =

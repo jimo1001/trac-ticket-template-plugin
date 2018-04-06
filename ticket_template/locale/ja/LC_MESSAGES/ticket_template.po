@@ -8,26 +8,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TracTicketTemplate 1.0\n"
 "Report-Msgid-Bugs-To: yosinobu@iij.ad.jp\n"
-"POT-Creation-Date: 2018-04-05 17:10+0900\n"
+"POT-Creation-Date: 2018-04-06 18:47+0900\n"
 "PO-Revision-Date: 2018-04-02 00:26+0900\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ja\n"
 "Language-Team: ja <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.3\n"
+"Generated-By: Babel 0.9.6\n"
 
 #: ticket_template/htdocs/tt_newticket.js:7
 #: ticket_template/htdocs/tt_newticket.js:19
 msgid "My Template"
-msgstr "テンプレート"
+msgstr ""
 
 #: ticket_template/htdocs/tt_newticket.js:8
 #: ticket_template/htdocs/tt_newticket.js:19
 msgid "Create"
-msgstr "作成"
+msgstr ""
 
 #: ticket_template/htdocs/tt_newticket.js:9
 #: ticket_template/htdocs/tt_newticket.js:19
@@ -37,17 +36,17 @@ msgstr "削除"
 #: ticket_template/htdocs/tt_newticket.js:10
 #: ticket_template/htdocs/tt_newticket.js:151
 msgid "Save template success: "
-msgstr "テンプレートの作成に成功しました。"
+msgstr ""
 
 #: ticket_template/htdocs/tt_newticket.js:11
 #: ticket_template/htdocs/tt_newticket.js:171
 msgid "Delete template success: "
-msgstr "テンプレートを削除しました。"
+msgstr ""
 
 #: ticket_template/htdocs/tt_newticket.js:12
 #: ticket_template/htdocs/tt_newticket.js:198
 msgid "Please input template name (overwriting existing one with equal name)."
-msgstr "テンプレート名を指定してください。"
+msgstr ""
 
 #: ticket_template/htdocs/tt_newticket.js:13
 #: ticket_template/htdocs/tt_newticket.js:287
@@ -63,3 +62,34 @@ msgstr ""
 #: ticket_template/htdocs/tt_newticket.js:317
 msgid "Replace ticket content with template?"
 msgstr ""
+
+#~ msgid "Ticket System"
+#~ msgstr ""
+
+#~ msgid "Ticket Templates"
+#~ msgstr ""
+
+#~ msgid "ID is required."
+#~ msgstr ""
+
+#~ msgid "ID contains invalid character(s)."
+#~ msgstr ""
+
+#~ msgid "Your changes have been saves."
+#~ msgstr ""
+
+#~ msgid "Manage Ticket Templates"
+#~ msgstr ""
+
+#~ msgid "Type:"
+#~ msgstr ""
+
+#~ msgid "Description:"
+#~ msgstr ""
+
+#~ msgid "Apply change"
+#~ msgstr ""
+
+#~ msgid "Reset"
+#~ msgstr ""
+

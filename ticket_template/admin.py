@@ -6,10 +6,10 @@ from pkg_resources import resource_filename
 from trac.admin import IAdminPanelProvider
 from trac.core import Component, implements
 from trac.ticket import TicketSystem
-from trac.util.translation import domain_functions
+from trac.util import translation
 from trac.web.chrome import add_notice, add_warning, add_stylesheet, add_script_data, ITemplateProvider
 
-gettext, _, tag_, N_, add_domain = domain_functions('ticket_template', 'gettext', '_', 'tag_', 'N_', 'add_domain')
+_, tag_, N_, add_domain = translation.domain_functions('ticket_template', '_', 'tag_', 'N_', 'add_domain')
 
 
 class TicketTemplateAdmin(Component):
@@ -20,7 +20,7 @@ class TicketTemplateAdmin(Component):
     def get_admin_panels(self, req):
         self.log.debug('access to ticket_template admin panel. %s', req)
         if req.perm.has_permission('TRAC_ADMIN'):
-            yield ('ticket', _("Ticket System"), 'templates', _("Ticket Template"))
+            yield ('ticket', _("Ticket System"), 'templates', _("Ticket Templates"))
 
     def render_admin_panel(self, req, category, page, path_info):
         data = {

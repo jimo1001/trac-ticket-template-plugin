@@ -8,64 +8,56 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TracTicketTemplate 1.0\n"
 "Report-Msgid-Bugs-To: yosinobu@iij.ad.jp\n"
-"POT-Creation-Date: 2018-04-05 17:10+0900\n"
+"POT-Creation-Date: 2018-04-06 18:47+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.3\n"
+"Generated-By: Babel 0.9.6\n"
 
-#: ticket_template/admin.py:22 ticket_template/ttadmin.py:182
+#: ticket_template/admin.py:23
 msgid "Ticket System"
 msgstr ""
 
-#: ticket_template/admin.py:22 ticket_template/ttadmin.py:183
-msgid "Ticket Template"
-msgstr ""
-
-#: ticket_template/admin.py:41
-msgid "ID is required."
+#: ticket_template/admin.py:23 ticket_template/templates/admin_ticket_template.html:11
+msgid "Ticket Templates"
 msgstr ""
 
 #: ticket_template/admin.py:43
+msgid "ID is required."
+msgstr ""
+
+#: ticket_template/admin.py:45
 msgid "ID contains invalid character(s)."
 msgstr ""
 
-#: ticket_template/admin.py:54 ticket_template/admin.py:64
+#: ticket_template/admin.py:56 ticket_template/admin.py:66
 msgid "Your changes have been saves."
 msgstr ""
 
-#: ticket_template/ttadmin.py:196
-msgid "default"
-msgstr ""
-
-#: ticket_template/templates/admin_ticket_template.html:11
-msgid "Available Projects"
-msgstr ""
-
 #: ticket_template/templates/admin_ticket_template.html:13
-msgid "Ticket: Template"
+msgid "Manage Ticket Templates"
 msgstr ""
 
 #: ticket_template/templates/admin_ticket_template.html:16
 msgid "Type:"
 msgstr ""
 
-#: ticket_template/templates/admin_ticket_template.html:23
+#: ticket_template/templates/admin_ticket_template.html:22
 msgid "Description:"
 msgstr ""
 
-#: ticket_template/templates/admin_ticket_template.html:27
+#: ticket_template/templates/admin_ticket_template.html:26
 msgid "Apply change"
 msgstr ""
 
-#: ticket_template/templates/admin_ticket_template.html:28
+#: ticket_template/templates/admin_ticket_template.html:27
 msgid "Reset"
 msgstr ""
 
-#: ticket_template/templates/admin_ticket_template.html:29
+#: ticket_template/templates/admin_ticket_template.html:28
 msgid "Delete"
 msgstr ""
 
