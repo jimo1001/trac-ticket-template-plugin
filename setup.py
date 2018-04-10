@@ -27,7 +27,7 @@ else:
 setup(
     name='TracTicketTemplate',
     description="Ticket Template Plugin for Trac.",
-    version='1.0',
+    version='0.1',
     packages=['ticket_template'],
     package_data={'ticket_template': [
         '*.txt',
@@ -48,7 +48,10 @@ setup(
     install_requires=['Trac', 'simple_json' if sys.version_info < (2, 6) else ''],
     test_suite='ticket_template.tests',
     entry_points={
-        'trac.plugins': ['ticket_template = ticket_template.admin'],
+        'trac.plugins': [
+            'ticket_template.admin = ticket_template.admin',
+            'ticket_template.web_api = ticket_template.web_api',
+        ],
     },
     **extra
 )

@@ -1,32 +1,54 @@
 <!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:i18n="http://genshi.edgewall.org/i18n"
       xmlns:xi="http://www.w3.org/2001/XInclude"
-         i18n:domain="ticket_template">
-
+     i18n:domain="ticket_template">
 <xi:include href="admin.html"/>
 <head><title>Ticket Templates</title></head>
 <body>
 <h2>Manage Ticket Templates</h2>
-<form id="save_ticket_template" action="${href.admin('ticket/ticket_template')}" method="post">
+<form class="mod" id="mod-ticket-template" action="${href.admin('ticket/ticket_template')}" method="post">
+  <fieldset>
+    <legend>Add Ticket Template</legend>
     <div class="field">
-        <label for="type">Type:</label>
-        <select size="1" id="type" name="type">
-            <option py:for="field in fields">${field.name}</option>
-        </select>
+      <label>ID: <br/>
+        <input name="id"/>
+      </label>
     </div>
     <div class="field">
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" class="wikitext" rows="10" cols="100" py:content="template"></textarea>
+      <label>Name: <br/>
+        <input name="name"/>
+      </label>
+    </div>
+    <div class="field">
+      <p>Conditions: </p>
+      <select size="1" id="field-name" name="field_name">
+        <option class="placeholder">Select a field name</option>
+        <option class="separation">--</option>
+        <option py:for="field in fields">${field.name}</option>
+      </select>
+      <span>is</span>
+      <select size="1" id="field-value" name="field_value">
+        <option class="placeholder">--</option>
+      </select>
+    </div>
+    <div class="field">
+      <fieldset class="iefix">
+        <label for="template" i18n:msg="">
+          Template (you may use <a tabindex="42" href="${href.wiki('WikiFormatting')}">WikiFormatting</a> here):
+        </label>
+        <textarea id="template" name="template" class="wikitext trac-resizable"
+                  rows="12" cols="72">${template}</textarea>
+      </fieldset>
     </div>
     <div class="buttons">
-        <input type="submit" name="save" value="${_('Apply change')}"/>
-        <input type="reset" value="${_('Reset')}"/>
-        <input type="submit" name="delete" value="${_('Delete')}"/>
+      <input type="reset" value="${_('Cancel')}"/>
+      <input type="submit" name="save" value="${_('Save')}"/>
     </div>
+  </fieldset>
 </form>
 </body>
 </html>
